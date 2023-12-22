@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #head-section {
+            background-color: rgb(118, 80, 255);
+            text-align: center;
+            padding: 10px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #head-section a {
+            font-size: 18px;
+            text-shadow: 2px 2px rgb(216, 196, 14);
+        }
+
+        h4 {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            text-shadow: 2px 2px purple;
+        }
+
+        h4:hover {
+            color: rgb(62, 238, 18);
+        }
+
+        #login-section,
+        #registration-section,
+        #acountcreation-section {
+            height: 50vh;
+            padding: 20px;
+            background-color: lightpink;
+        }
+
+        #login-btn,
+        #signup-btn,
+        #acount {
+            width: 80px;
+            height: 40px;
+            padding: 5px;
+            background-color: rgb(6, 137, 224);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="head-section">
+
+        <h4>CONTACT-LIST MANAGEMENT </h4>
+        <a href="">LOGIN</a>
+        <a href="">REGISTER</a>
+    </header>
+    <div id="login-section">
+        <h1>Login</h1>
+        <form>
+            <label>Email</label>
+            <input type="text" value="" placeholder="enter your email" id="l-email" /><br><br>
+            <label>password</label>
+            <input type="password" value="" placeholder="enter your password" id="l-password" /><br><br>
+            <button id="login-btn" onclick="login(event)">Login</button>
+            <p>don't have an account<a href=" #" onclick="goTosignup()">register</a>here</p>
+        </form>
+    </div>
+    <div id="registration-section">
+        <h1>registration</h1>
+        <form>
+            <label>Email</label>
+            <input type="text" value="" placeholder="enter your email" id="s-email" /><br><br>
+            <label>name</label>
+            <input type="name" value="" placeholder="enter your name" id="s-name" /><br><br>
+            <label>password</label>
+            <input type="password" value="" id="s-password" /><br><br>
+            <button id="signup-btn" onclick="signup(event)">submit</button>
+            <p>Alredy have an account please <a href="#" onclick="goToacount()">Login</a> here</p>
+        </form>
+    </div>
+    <div id="acountcreation-section">
+        <h1>CREATE YOUR ACCOUNT</h1>
+        <form>
+
+            <label>Email</label>
+            <input type="text" value="" placeholder="enter your email" id="s-email" /><br><br>
+            <label>name</label>
+            <input type="name" value="" placeholder="enter your name" id="s-name" /><br><br>
+            <label>Address</label>
+            <input type="text" value="" id="s-address" /><br><br>
+            <label>contact number</label>
+            <input type="number" value="" id="s-number" /><br><br>
+            <button id="acount" onclick="acount(event)">ADD CONTACT</button>
+            <p>already an account please<a href="#"  onclick="goToLogin()">register</a>here</p>
+        </form>
+    </div>
+    <div id="contact-section">
+        <h1>YOUR CONTACTS</h1>
+        <form>
+        <label>contact number</label>
+            <input type="number" value="" id="c-number" /><br><br>
+         <button id="contact" onclick="contact(event)"> RELOAD CONTACT</button>
+         
+        </form>
+    </div>
+
+    <script>
+        let registrationDiv = document.getElementById("registration-section")
+        let loginDiv = document.getElementById("login-section")
+        let acountDiv = document.getElementById("acountcreation-section")
+        let contactDiv = document.getElementById("contact-section")
+        loginDiv.style.display = "none"
+        acountDiv.style.display = "none"
+        contactDiv.style.display = "none"
+        function goTosignup() {
+            registrationDiv.style.display = "block"
+            loginDiv.style.display = "none"
+        }
+        function goToLogin() {
+            loginDiv.style.display = "block"
+            registrationDiv.style.display = "none"
+        }
+        function goToacount() {
+            loginDiv.style.display = "none"
+            registrationDiv.style.display = "none"
+            acountDiv.style.display = "block"
+        }
+        async function signup(e) {
+            e.preventDefault();
+            let email = document.getElementById("s-email").value;
+            let name = document.getElementById("s-name").value;
+            let password = document.getElementById("s-password").value;
+            console.log(email, name, password)
+            await localStorage.setItem(email, name, password)
+
+            goToLogin();
+           
+
+        }
+        
+        async function login(event) {
+            event.preventDefault()
+            let email = document.getElementById("l-email").value
+            let password = document.getElementById("l-password").value
+            let user = await localStorage.getItem(email)
+            if (!user) {
+                alert("user not found")
+            } else {
+                if (user === password) {
+                    alert("login success")
+                    localStorage.setItem("loggedInUser", email)
+                    goToacount()
+                } else {
+                    alert("invalid credentials")
+                }
+            }
+          
+        }
+        async function acount(e) {
+            e.preventDefault();
+            let email = document.getElementById("s-email").value;
+            let name = document.getElementById("s-name").value;
+            let number = document.getElementById("s-number").value;
+            let address = document.getElementById("s-address").value;
+            console.log(email, name, number, address)
+            await localStorage.setItem(email, name, number, address)
+        }
+        async function contact(e) {
+            e.preventDefault();
+           
+            let number = document.getElementById("c-number").value;
+            
+            console.log( number)
+            await localStorage.setItem( number)
+        }
+    </script>
+
+</body>
+</html>
